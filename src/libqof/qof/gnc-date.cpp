@@ -155,12 +155,6 @@ normalize_struct_tm (struct tm* time)
      gint year = time->tm_year + 1900;
      gint last_day;
 
-     /* Gregorian_date throws if it gets an out-of-range year
-      * so clamp year into gregorian_date's range.
-      */
-     if (year < 1400) year += 1400;
-     if (year > 9999) year %= 10000;
-
      normalize_time_component (&(time->tm_sec), &(time->tm_min), 60, 0);
      normalize_time_component (&(time->tm_min), &(time->tm_hour), 60, 0);
      normalize_time_component (&(time->tm_hour), &(time->tm_mday), 24, 0);
@@ -180,6 +174,13 @@ normalize_struct_tm (struct tm* time)
           normalize_month(&(++time->tm_mon), &year);
           last_day = gnc_date_get_last_mday (time->tm_mon, year);
      }
+
+     /* Gregorian_date throws if it gets an out-of-range year
+      * so clamp year into gregorian_date's range.
+      */
+     if (year < 1400) year += 1400;
+     if (year > 9999) year %= 10000;
+
      time->tm_year = year - 1900;
 }
 
@@ -211,6 +212,10 @@ gnc_mktime (struct tm* time)
     }
     catch(std::invalid_argument)
     {
+        PERR("Invalid time (%d, %d, %d, %d, %d, %d, %d, %d, %d)",
+             time->tm_year, time->tm_mon, time->tm_mday,
+             time->tm_hour, time->tm_min, time->tm_sec,
+             time->tm_yday, time->tm_mday, time->tm_isdst);
 	return 0;
     }
 }
