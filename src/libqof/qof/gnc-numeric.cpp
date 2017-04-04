@@ -281,9 +281,11 @@ int64_t
 GncNumeric::sigfigs_denom(unsigned figs) const noexcept
 {
     int64_t num_abs{std::abs(m_num)};
-    bool not_frac = num_abs > m_den;
+    bool not_frac = num_abs == 0 || num_abs > m_den;
     int64_t val{ not_frac ? num_abs / m_den : m_den / num_abs };
     unsigned digits{};
+    if (num_abs == 0)
+        return 1;
     while (val >= 10)
     {
         ++digits;
