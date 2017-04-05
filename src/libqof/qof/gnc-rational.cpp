@@ -196,13 +196,16 @@ GncRational::round_to_numeric() const
             throw std::overflow_error(msg.str());
         }
         GncRational new_v(*this);
-        new_v = new_v.convert<RoundType::half_down>(m_den / (m_num.abs() >> 62));
+        new_v = new_v.convert<RoundType::half_down>(m_den / 
+                        (m_num.abs() >> (GncInt128::maxbits - 
+                                         GncInt128::legbits * (GncInt128::numlegs - 1))));
         return new_v;
     }
     auto quot(m_den / m_num);
     if (quot.isBig())
         return GncRational(); //Smaller than can be represented as a GncNumeric
-    auto divisor = m_den >> 62;
+    auto divisor = m_den >> (GncInt128::maxbits - 
+                             GncInt128::legbits * (GncInt128::numlegs - 1));
     if (m_num.isBig())
     {
         GncInt128 oldnum(m_num), num, rem;

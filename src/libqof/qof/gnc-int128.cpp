@@ -500,7 +500,7 @@ GncInt128::operator*= (const GncInt128& b) noexcept
     }
 
     unsigned int abits {bits()}, bbits {b.bits()};
-    if (abits + bbits > maxbits)
+    if (abits + bbits > maxbits + 1)
     {
         flags |= overflow;
         m_hi = set_flags(m_hi, flags);

@@ -38,8 +38,8 @@ TEST(gncnumeric_constructors, test_gnc_rational_constructor)
     GncRational in (num128, den128);
     GncNumeric out;
     ASSERT_NO_THROW(out = GncNumeric(in));
-    EXPECT_EQ(INT64_C(1246404345742679464), out.num());
-    EXPECT_EQ(INT64_C(4611686019021985017), out.denom());
+    EXPECT_EQ(INT64_C(623202172871339732), out.num());
+    EXPECT_EQ(INT64_C(2305843009510992508), out.denom());
 }
 
 TEST(gncnumeric_constructors, test_gnc_numeric_constructor)
@@ -332,11 +332,11 @@ TEST(gncnumeric_operators, test_multiplication)
     GncNumeric a(123456789987654321, 1000000000);
     GncNumeric b(65432198765432198, 100000000);
     GncNumeric c = a * b;
-    EXPECT_EQ (4604488056206217807, c.num());
-    EXPECT_EQ (57, c.denom());
+    EXPECT_EQ (2261853781996036818, c.num());
+    EXPECT_EQ (28, c.denom());
     a *= b;
-    EXPECT_EQ (4604488056206217807, a.num());
-    EXPECT_EQ (57, a.denom());
+    EXPECT_EQ (2261853781996036818, a.num());
+    EXPECT_EQ (28, a.denom());
 
     GncNumeric d(215815575996, 269275978715);
     GncNumeric e(1002837599929, 1);
@@ -344,6 +344,11 @@ TEST(gncnumeric_operators, test_multiplication)
     EXPECT_NO_THROW(f = d * e);
     EXPECT_NO_THROW(g = f.convert<RoundType::half_up>(1));
 
+    GncNumeric h(133499999999, 136499999999);
+    GncNumeric i(60000000003, 100000000);
+    GncNumeric j;
+    EXPECT_NO_THROW(j = gnc_numeric_mul(h, i, 100000000, GNC_HOW_RND_ROUND));
+    EXPECT_EQ(58681318684, j.num());
 }
 
 TEST(gncnumeric_operators, test_division)

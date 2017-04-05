@@ -69,7 +69,8 @@ class GncInt128
 public:
     static const unsigned int numlegs = 2;
     static const unsigned int legbits = 64;
-    static const unsigned int maxbits = legbits * numlegs;
+    // The top three bits are flag bits.
+    static const unsigned int maxbits = legbits * numlegs - 3;
 
 enum // Values for m_flags
 {
