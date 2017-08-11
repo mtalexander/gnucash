@@ -301,7 +301,9 @@ GncNumeric::sigfigs_denom(unsigned figs) const noexcept
         ++digits;
         val /= 10;
     }
-    return not_frac ? powten(figs - digits - 1) : powten(figs + digits);
+    return not_frac ? 
+            powten(digits >= figs ? 0 : figs - digits - 1) : 
+            powten(figs + digits);
 }
 
 std::string
