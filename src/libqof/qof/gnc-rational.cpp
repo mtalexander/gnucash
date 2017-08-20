@@ -172,7 +172,7 @@ GncRational::sigfigs_denom(unsigned figs) const noexcept
         val /= 10;
     }
     return not_frac ? 
-            powten(digits >= figs ? 0 : figs - digits - 1) : 
+            powten(digits < figs ? figs - digits - 1 : 0) : 
             powten(figs + digits);
 }
 
