@@ -89,7 +89,7 @@ GncNumeric::GncNumeric(double d) : m_num(0), m_den(1)
         msg << "Unable to construct a GncNumeric from " << d << ".\n";
         throw std::invalid_argument(msg.str());
     }
-    constexpr auto max_num = INT64_MAX;
+    constexpr auto max_num = static_cast<double>(INT64_MAX);
     auto logval = log10(fabs(d));
     int64_t den;
     uint8_t den_digits;
@@ -101,8 +101,7 @@ GncNumeric::GncNumeric(double d) : m_num(0), m_den(1)
     auto num_d = static_cast<double>(den) * d;
     while (fabs(num_d) > max_num && den_digits > 1)
     {
-        --den_digits;
-        den = powten(den_digits);
+        den = powten(--den_digits);
         num_d = static_cast<double>(den) * d;
     }
     auto num = static_cast<int64_t>(floor(num_d));
